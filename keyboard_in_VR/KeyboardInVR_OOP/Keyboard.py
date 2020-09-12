@@ -61,7 +61,7 @@ class Keyboard(ObjectFrame):
             else:
                 cv2.putText(frame, 'no keyboard detected, try harder', (10, 50),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
-        cv2.imshow("frame", frame)
+        # cv2.imshow("frame", frame)
 
     def get_position_4_corners(self, frame):
         pass
