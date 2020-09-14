@@ -205,6 +205,7 @@ class Keyboard(ObjectFrame):
                         self.vertices = [pt1, pt4, pt2, pt3]
 
     def perspective_transformation(self, frame):
+        self.sort_vertices()
         pts1 = np.float32(self.vertices)
         pts2 = np.float32([[0, 0], [0, 260], [880, 260], [880, 0]])
         matrix = cv2.getPerspectiveTransform(pts1, pts2)
