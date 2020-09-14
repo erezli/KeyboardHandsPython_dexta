@@ -1,8 +1,11 @@
 import numpy as np
 import cv2
+import adaptive_contour
 
 
 def SkinDetect(img, hsvBoundary, YCrCbBoundary):
+    img = adaptive_contour.HandFiltering(img)
+    cv2.imshow('img', img)
     # converting from gbr to hsv color space
     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # skin color range for hsv color space

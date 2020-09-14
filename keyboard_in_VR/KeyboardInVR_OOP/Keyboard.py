@@ -66,6 +66,144 @@ class Keyboard(ObjectFrame):
     def get_position_4_corners(self, frame):
         pass
 
+    def sort_vertices(self):
+        pt1 = self.vertices[0]
+        pt2 = self.vertices[1]
+        pt3 = self.vertices[2]
+        pt4 = self.vertices[3]
+        if pt1[0] < pt2[0] and pt1[0] < pt3[0] or pt1[0] < pt2[0] and pt1[0] < pt4[0] or pt1[0] < pt3[0] and pt1[0] < pt4[0]:
+            if pt1[1] < pt2[1] and pt1[1] < pt3[1] or pt1[1] < pt4[1] and pt1[1] < pt3[1] or pt1[1] < pt2[1] and pt1[1] < pt4[1]:
+                if pt2[0] < pt3[0] and pt2[0] < pt4[0]:
+                    if pt3[1] < pt4[1]:
+                        self.vertices = [pt1, pt2, pt4, pt3]
+                    else:
+                        self.vertices = [pt1, pt2, pt3, pt4]
+                elif pt3[0] < pt4[0] and pt3[0] < pt2[0]:
+                    if pt2[1] < pt4[1]:
+                        self.vertices = [pt1, pt3, pt4, pt2]
+                    else:
+                        self.vertices = [pt1, pt3, pt2, pt4]
+                else:
+                    if pt2[1] < pt3[1]:
+                        self.vertices = [pt1, pt4, pt3, pt2]
+                    else:
+                        self.vertices = [pt1, pt4, pt2, pt3]
+            else:
+                if pt2[0] < pt3[0] and pt2[0] < pt4[0]:
+                    if pt3[1] < pt4[1]:
+                        self.vertices = [pt2, pt1, pt4, pt3]
+                    else:
+                        self.vertices = [pt2, pt1, pt3, pt4]
+                elif pt3[0] < pt4[0] and pt3[0] < pt2[0]:
+                    if pt2[1] < pt4[1]:
+                        self.vertices = [pt3, pt1, pt4, pt2]
+                    else:
+                        self.vertices = [pt3, pt1, pt2, pt4]
+                else:
+                    if pt2[1] < pt3[1]:
+                        self.vertices = [pt4, pt1, pt3, pt2]
+                    else:
+                        self.vertices = [pt4, pt1, pt2, pt3]
+        elif pt2[0] < pt1[0] and pt2[0] < pt3[0] or pt2[0] < pt1[0] and pt2[0] < pt4[0] or pt2[0] < pt3[0] and pt2[0] < pt4[0]:
+            if pt2[1] < pt1[1] and pt2[1] < pt3[1] or pt2[1] < pt4[1] and pt2[1] < pt3[1] or pt2[1] < pt1[1] and pt2[1] < pt4[1]:
+                if pt1[0] < pt3[0] and pt1[0] < pt4[0]:
+                    if pt3[1] < pt4[1]:
+                        self.vertices = [pt2, pt1, pt4, pt3]
+                    else:
+                        self.vertices = [pt2, pt1, pt3, pt4]
+                elif pt3[0] < pt4[0] and pt3[0] < pt1[0]:
+                    if pt1[1] < pt4[1]:
+                        self.vertices = [pt2, pt3, pt4, pt1]
+                    else:
+                        self.vertices = [pt2, pt3, pt1, pt4]
+                else:
+                    if pt1[1] < pt3[1]:
+                        self.vertices = [pt2, pt4, pt3, pt1]
+                    else:
+                        self.vertices = [pt2, pt4, pt1, pt3]
+            else:
+                if pt1[0] < pt3[0] and pt1[0] < pt4[0]:
+                    if pt3[1] < pt4[1]:
+                        self.vertices = [pt1, pt2, pt4, pt3]
+                    else:
+                        self.vertices = [pt1, pt2, pt3, pt4]
+                elif pt3[0] < pt4[0] and pt3[0] < pt1[0]:
+                    if pt1[1] < pt4[1]:
+                        self.vertices = [pt3, pt2, pt4, pt1]
+                    else:
+                        self.vertices = [pt3, pt2, pt1, pt4]
+                else:
+                    if pt1[1] < pt3[1]:
+                        self.vertices = [pt4, pt2, pt3, pt1]
+                    else:
+                        self.vertices = [pt4, pt2, pt1, pt3]
+        elif pt3[0] < pt2[0] and pt3[0] < pt1[0] or pt3[0] < pt2[0] and pt3[0] < pt4[0] or pt3[0] < pt1[0] and pt3[0] < pt4[0]:
+            if pt3[1] < pt2[1] and pt3[1] < pt1[1] or pt3[1] < pt4[1] and pt3[1] < pt1[1] or pt3[1] < pt2[1] and pt3[1] < pt4[1]:
+                if pt2[0] < pt1[0] and pt2[0] < pt4[0]:
+                    if pt1[1] < pt4[1]:
+                        self.vertices = [pt3, pt2, pt4, pt1]
+                    else:
+                        self.vertices = [pt3, pt2, pt1, pt4]
+                elif pt1[0] < pt4[0] and pt1[0] < pt2[0]:
+                    if pt2[1] < pt4[1]:
+                        self.vertices = [pt3, pt1, pt4, pt2]
+                    else:
+                        self.vertices = [pt3, pt1, pt2, pt2]
+                else:
+                    if pt2[1] < pt1[1]:
+                        self.vertices = [pt3, pt4, pt1, pt2]
+                    else:
+                        self.vertices = [pt3, pt4, pt2, pt1]
+            else:
+                if pt2[0] < pt1[0] and pt2[0] < pt4[0]:
+                    if pt1[1] < pt4[1]:
+                        self.vertices = [pt2, pt3, pt4, pt1]
+                    else:
+                        self.vertices = [pt2, pt3, pt1, pt4]
+                elif pt1[0] < pt4[0] and pt1[0] < pt2[0]:
+                    if pt2[1] < pt4[1]:
+                        self.vertices = [pt1, pt3, pt4, pt2]
+                    else:
+                        self.vertices = [pt1, pt3, pt2, pt4]
+                else:
+                    if pt2[1] < pt1[1]:
+                        self.vertices = [pt4, pt3, pt1, pt2]
+                    else:
+                        self.vertices = [pt4, pt3, pt2, pt1]
+        else:
+            if pt4[1] < pt2[1] and pt4[1] < pt3[1] or pt4[1] < pt1[1] and pt4[1] < pt3[1] or pt4[1] < pt2[1] and pt4[1] < pt1[1]:
+                if pt2[0] < pt3[0] and pt2[0] < pt1[0]:
+                    if pt3[1] < pt1[1]:
+                        self.vertices = [pt4, pt2, pt1, pt3]
+                    else:
+                        self.vertices = [pt4, pt2, pt3, pt1]
+                elif pt3[0] < pt1[0] and pt3[0] < pt2[0]:
+                    if pt2[1] < pt1[1]:
+                        self.vertices = [pt4, pt3, pt1, pt2]
+                    else:
+                        self.vertices = [pt4, pt3, pt2, pt1]
+                else:
+                    if pt2[1] < pt3[1]:
+                        self.vertices = [pt4, pt1, pt3, pt2]
+                    else:
+                        self.vertices = [pt4, pt1, pt2, pt3]
+            else:
+                if pt2[0] < pt3[0] and pt2[0] < pt1[0]:
+                    if pt3[1] < pt1[1]:
+                        self.vertices = [pt2, pt4, pt1, pt3]
+                    else:
+                        self.vertices = [pt2, pt4, pt3, pt1]
+                elif pt3[0] < pt1[0] and pt3[0] < pt2[0]:
+                    if pt2[1] < pt1[1]:
+                        self.vertices = [pt3, pt4, pt1, pt2]
+                    else:
+                        self.vertices = [pt3, pt4, pt2, pt1]
+                else:
+                    if pt2[1] < pt3[1]:
+                        self.vertices = [pt1, pt4, pt3, pt2]
+                    else:
+                        self.vertices = [pt1, pt4, pt2, pt3]
+
     def perspective_transformation(self, frame):
         pts1 = np.float32(self.vertices)
         pts2 = np.float32([[0, 0], [0, 260], [880, 260], [880, 0]])

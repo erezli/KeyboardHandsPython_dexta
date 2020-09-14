@@ -16,7 +16,7 @@ def movementFilter(frame):
 
 def colourFilter(frame):
     nohand, hsv, ycrcb = hsv_ycrcb.SkinDetect(frame, hsvB, ycrcbB)
-    nohand = cv2.erode(nohand, np.ones((2, 2), np.uint8), iterations=3)
+    nohand = cv2.erode(nohand, np.ones((3, 3), np.uint8), iterations=3)
     nohand = cv2.bitwise_and(frame, frame, mask=nohand)
 
     cv2.imshow("hsvOnly", hsv)
