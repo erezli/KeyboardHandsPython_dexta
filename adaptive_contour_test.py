@@ -1,5 +1,5 @@
 import cv2
-from tests import adaptive_contour
+import adaptive_contour
 
 cap = cv2.VideoCapture(0)
 

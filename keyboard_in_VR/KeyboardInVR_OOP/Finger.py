@@ -137,23 +137,38 @@ class Fingers(ObjectFrame):
         translucent_fingers = cv2.addWeighted(first_frame, a, hands, b, 0)
         return translucent_fingers
 
+    @staticmethod
+    def HandFiltering(frame):
+        frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 799, -20)
+        mask = np.zeros(frame.shape, dtype=frame.dtype)
+        contors, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        for c in contors:
+            if cv2.contourArea(c) > 1000:
+                cv2.drawContours(mask, [c], -1, (255, 255, 255), -1)
+        # mask = cv2.bitwise_not(mask)
+        mask = cv2.bitwise_or(frame, mask)
+
+        return mask
+
     def SkinDetect(self, img):
+        img = self.HandFiltering(img)
         # converting from gbr to hsv color space
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         # skin color range for hsv color space
         hsv_mask = cv2.inRange(img_hsv, self.hsvBoundary[0], self.hsvBoundary[1])
-        hsv_mask = cv2.morphologyEx(hsv_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+        hsv_mask = cv2.morphologyEx(hsv_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
 
         # converting from gbr to YCbCr color space
         img_y_cr_cb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
         # skin color range for hsv color space
         y_cr_cb_mask = cv2.inRange(img_y_cr_cb, self.YCrCbBoundary[0], self.YCrCbBoundary[1])
-        y_cr_cb_mask = cv2.morphologyEx(y_cr_cb_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+        y_cr_cb_mask = cv2.morphologyEx(y_cr_cb_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
 
         # merge skin detection (YCbCr and hsv)
         global_mask = cv2.bitwise_and(y_cr_cb_mask, hsv_mask)
         global_mask = cv2.medianBlur(global_mask, 3)
-        global_mask = cv2.morphologyEx(global_mask, cv2.MORPH_CLOSE, np.ones((4, 4), np.uint8))
+        global_mask = cv2.morphologyEx(global_mask, cv2.MORPH_OPEN, np.ones((4, 4), np.uint8))
 
         hsv_result = cv2.bitwise_not(hsv_mask)
         y_cr_cb_result = cv2.bitwise_not(y_cr_cb_mask)
@@ -163,7 +178,7 @@ class Fingers(ObjectFrame):
     def TranslucentPile(self, frame, count):
         global added
         nohand, hsv, ycrcb = self.SkinDetect(frame)
-        nohand = cv2.erode(nohand, np.ones((2, 2), np.uint8), iterations=3)
+        nohand = cv2.erode(nohand, np.ones((3, 3), np.uint8), iterations=3)
         nohand = cv2.bitwise_and(frame, frame, mask=nohand)
         if count == 1:
             added = nohand
