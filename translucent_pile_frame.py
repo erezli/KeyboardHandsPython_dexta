@@ -8,6 +8,12 @@ ycrcbB = [(186, 106, 113), (255, 141, 139)]
 
 
 def movementFilter(frame):
+    """
+    检测动态
+    是否能用来提高稳定性？
+    :param frame:
+    :return:
+    """
     fg = fgbg.apply(frame)
     msk = cv2.bitwise_and(frame, frame, mask=fg)
     sub = cv2.absdiff(frame, msk)
@@ -15,6 +21,12 @@ def movementFilter(frame):
 
 
 def colourFilter(frame):
+    """
+    using HSV and YCrCb after applying adaptive threshold to detect hands/skin
+    - the colour boundary may differ between people.
+    :param frame:
+    :return:
+    """
     nohand, hsv, ycrcb = hsv_ycrcb.SkinDetect(frame, hsvB, ycrcbB)
     nohand = cv2.erode(nohand, np.ones((3, 3), np.uint8), iterations=3)
     nohand = cv2.bitwise_and(frame, frame, mask=nohand)
@@ -29,14 +41,14 @@ cap = cv2.VideoCapture(0)
 count = 0
 
 while cap.isOpened():
-    global added
+    global added        # pile every frame that has cropped the hands out to build up a complete keyboard background
     count += 1
     _, frame = cap.read()
     bg, hsvbg, ycrcbbg = colourFilter(frame)
     if count == 1:
         added = bg
     else:
-        added = cv2.addWeighted(bg, 1/(count+1), added, 1-(1/(count+1)), 0)
+        added = cv2.addWeighted(bg, 1/(count+2), added, 1-(1/(count+2)), 0)
 
     show = cv2.addWeighted(added, .4, frame, .6, 0)
     cv2.imshow("Frame", show)

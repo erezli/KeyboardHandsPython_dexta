@@ -4,6 +4,14 @@ import adaptive_contour
 
 
 def SkinDetect(img, hsvBoundary, YCrCbBoundary):
+    """
+    using HSV and YCrCb after applying adaptive threshold to detect hands/skin
+    - the colour boundary may differ between people.
+    :param img:
+    :param hsvBoundary: list: [(lower boundary tuple), (upper boundary tuple)]
+    :param YCrCbBoundary: list: [(lower boundary tuple), (upper boundary tuple)]
+    :return: masks
+    """
     img = adaptive_contour.HandFiltering(img)
     cv2.imshow('img', img)
     # converting from gbr to hsv color space
@@ -27,3 +35,7 @@ def SkinDetect(img, hsvBoundary, YCrCbBoundary):
     y_cr_cb_result = cv2.bitwise_not(y_cr_cb_mask)
     global_result = cv2.bitwise_not(global_mask)
     return global_result, hsv_result, y_cr_cb_result
+
+
+if __name__ == '__init__':
+    pass
