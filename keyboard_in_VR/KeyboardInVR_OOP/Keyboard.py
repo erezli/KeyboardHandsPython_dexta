@@ -19,6 +19,11 @@ class Keyboard(ObjectFrame):
         self.contour = None
 
     def get_position_contour(self, frame):
+        """
+        updates the position of keyboard using HSV colour filter and contour detection
+        :param frame:
+        :return:
+        """
         # mask out the background
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         l_b = np.array(self.hsv_l)
@@ -64,9 +69,14 @@ class Keyboard(ObjectFrame):
         # cv2.imshow("frame", frame)
 
     def get_position_4_corners(self, frame):
+        # see Corners class
         pass
 
     def sort_vertices(self):
+        """
+        Sort 4 vertices into the order top left, bottom left, bottom right, top right
+        :return:
+        """
         pt1 = self.vertices[0]
         pt2 = self.vertices[1]
         pt3 = self.vertices[2]
@@ -205,6 +215,11 @@ class Keyboard(ObjectFrame):
                         self.vertices = [pt1, pt4, pt2, pt3]
 
     def perspective_transformation(self, frame):
+        """
+        crop the frame to display detected keyboard only.
+        :param frame:
+        :return:
+        """
         self.sort_vertices()
         pts1 = np.float32(self.vertices)
         pts2 = np.float32([[0, 0], [0, 260], [880, 260], [880, 0]])

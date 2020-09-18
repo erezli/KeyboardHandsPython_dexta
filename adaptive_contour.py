@@ -3,8 +3,10 @@ import numpy as np
 
 
 def HandFiltering(frame):
+    # 自适应阈值
     frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 799, -20)
+    # 只保留一定面积以上的mask
     mask = np.zeros(frame.shape, dtype=frame.dtype)
     contors, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     for c in contors:

@@ -108,7 +108,8 @@ class Fingers(ObjectFrame):
 
     def translucent_fingers(self, frame, first_frame, transparency=4):
         """
-        This function is beaten by SkinDetect and TranslucentPile.
+        This function is beaten by SkinDetect and TranslucentPile. Because this function uses the first frame ONLY for
+        background of translucent effect.
         This function is originally for fingers wearing blue gloves.
         :param frame:
         :param first_frame:
@@ -139,6 +140,11 @@ class Fingers(ObjectFrame):
 
     @staticmethod
     def HandFiltering(frame):
+        """
+        Uses adaptive threshold to find hands on keyboard and contours to filter out 'small' noise.
+        :param frame:
+        :return:
+        """
         frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 799, -20)
         mask = np.zeros(frame.shape, dtype=frame.dtype)
@@ -152,6 +158,11 @@ class Fingers(ObjectFrame):
         return mask
 
     def SkinDetect(self, img):
+        """
+        Use HSV combined with YCrCb to attempt better filtering result to get hands.
+        :param img:
+        :return: masks to mask out hands
+        """
         img = self.HandFiltering(img)
         # converting from gbr to hsv color space
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -176,6 +187,12 @@ class Fingers(ObjectFrame):
         return global_result, hsv_result, y_cr_cb_result
 
     def TranslucentPile(self, frame, count):
+        """
+        Makes hands translucent on the frame
+        :param frame:
+        :param count:
+        :return:
+        """
         global added
         nohand, hsv, ycrcb = self.SkinDetect(frame)
         nohand = cv2.erode(nohand, np.ones((3, 3), np.uint8), iterations=3)

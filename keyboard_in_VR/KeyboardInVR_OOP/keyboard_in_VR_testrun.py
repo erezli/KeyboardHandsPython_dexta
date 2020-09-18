@@ -1,3 +1,5 @@
+# in this test keyboard detection, perspective transform and translucent hands are applied.
+
 import cv2
 from keyboard_in_VR.KeyboardInVR_OOP.Keyboard import Keyboard
 from keyboard_in_VR.KeyboardInVR_OOP.Finger import Fingers

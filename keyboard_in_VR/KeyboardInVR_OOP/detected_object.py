@@ -1,4 +1,4 @@
-
+# 好像没必要将所有对象都归到一个parent class里面， 但写都写了
 class ObjectFrame:
     # keyboard and fingertips
 

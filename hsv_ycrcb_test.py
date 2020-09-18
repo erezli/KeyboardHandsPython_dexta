@@ -1,5 +1,8 @@
+############
+# use this file to find suitable HSV and YCrCb boundary.
+############
 import cv2
-from tests import hsv_ycrcb
+import hsv_ycrcb
 
 fgbg = cv2.bgsegm.createBackgroundSubtractorMOG()
 

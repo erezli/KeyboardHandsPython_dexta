@@ -18,6 +18,11 @@ class Corners(ObjectFrame):
         self._roi_hists = [np.zeros((180, 1)) for i in range(4)]
 
     def update_property(self, frame):
+        """
+        Using HSV colour to detect orange corner and update its location (sorted)
+        :param frame:
+        :return:
+        """
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         l_b = np.array(self.hsv_l)
         u_b = np.array(self.hsv_u)
@@ -54,6 +59,12 @@ class Corners(ObjectFrame):
             self.track_win = [l_w[0], r_w[0], l_w[1], r_w[1]]
 
     def optical_flow_track(self, old_frame_gray, frame):
+        """
+        Use optical flow to track corners with given previous location (sorted).
+        :param old_frame_gray:
+        :param frame:
+        :return:
+        """
         gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
         new_wins = []
         for wins in self.track_win:
@@ -81,6 +92,11 @@ class Corners(ObjectFrame):
         return gray.copy()
 
     def update_roi_hists(self, frame):
+        """
+        This function updates the ROI's histogram - use before using camshift tracking.
+        :param frame:
+        :return:
+        """
         hists = []
         for i in range(4):
             (x, y, w, h) = self.track_win[i]
@@ -94,6 +110,11 @@ class Corners(ObjectFrame):
         self.roi_hists = hists
 
     def cam_shift_track(self, frame):
+        """
+        Camshift tracking of 4 corners.
+        :param frame:
+        :return:
+        """
         term_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
         for i in range(4):
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
