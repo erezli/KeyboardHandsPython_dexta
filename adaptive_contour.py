@@ -8,8 +8,8 @@ def HandFiltering(frame):
     thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 999, -20)
     # 只保留一定面积以上的mask
     mask = np.zeros(frame.shape, dtype=frame.dtype)
-    contors, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    for c in contors:
+    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    for c in contours:
         if cv2.contourArea(c) > 800:
             cv2.drawContours(mask, [c], -1, (255, 255, 255), -1)
     # mask = cv2.bitwise_not(mask)
