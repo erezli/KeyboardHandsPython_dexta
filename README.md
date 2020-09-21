@@ -1,7 +1,7 @@
 # KeyboardHandsPython
  -opencv, python-
 
-1. Detect Keyboard and Hands
+1. Detect Keyboard(with returned position) and Hands(without any position value returned)
 
 2. Show only Keyboard on the screen (cropped frame)
 

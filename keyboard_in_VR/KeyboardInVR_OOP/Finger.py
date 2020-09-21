@@ -145,17 +145,19 @@ class Fingers(ObjectFrame):
         :param frame:
         :return:
         """
+        # 自适应阈值
         frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 799, -20)
+        thresh = cv2.adaptiveThreshold(frameGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 999, -20)
+        # 只保留一定面积以上的mask
         mask = np.zeros(frame.shape, dtype=frame.dtype)
-        contors, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-        for c in contors:
+        contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        for c in contours:
             if cv2.contourArea(c) > 1000:
                 cv2.drawContours(mask, [c], -1, (255, 255, 255), -1)
         # mask = cv2.bitwise_not(mask)
-        mask = cv2.bitwise_or(frame, mask)
+        maskFrame = cv2.bitwise_or(frame, mask)
 
-        return mask
+        return maskFrame, mask
 
     def SkinDetect(self, img):
         """
@@ -163,7 +165,8 @@ class Fingers(ObjectFrame):
         :param img:
         :return: masks to mask out hands
         """
-        img = self.HandFiltering(img)
+        imgF, imgM = self.HandFiltering(img)
+        imgM = cv2.cvtColor(imgM, cv2.COLOR_BGR2GRAY)
         # converting from gbr to hsv color space
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         # skin color range for hsv color space
@@ -178,6 +181,7 @@ class Fingers(ObjectFrame):
 
         # merge skin detection (YCbCr and hsv)
         global_mask = cv2.bitwise_and(y_cr_cb_mask, hsv_mask)
+        global_mask = cv2.bitwise_or(global_mask, imgM)
         global_mask = cv2.medianBlur(global_mask, 3)
         global_mask = cv2.morphologyEx(global_mask, cv2.MORPH_OPEN, np.ones((4, 4), np.uint8))
 
