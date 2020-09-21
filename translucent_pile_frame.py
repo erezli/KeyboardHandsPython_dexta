@@ -3,8 +3,8 @@ import hsv_ycrcb
 import numpy as np
 
 fgbg = cv2.bgsegm.createBackgroundSubtractorMOG()
-hsvB = [(0, 0, 160), (206, 28, 255)]
-ycrcbB = [(186, 106, 113), (255, 141, 139)]
+hsvB = [(0, 0, 160), (160, 46, 255)]
+ycrcbB = [(109, 88, 113), (255, 141, 139)]
 
 
 def movementFilter(frame):
